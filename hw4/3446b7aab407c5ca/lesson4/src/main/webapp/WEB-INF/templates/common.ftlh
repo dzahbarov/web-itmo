@@ -109,3 +109,24 @@
         </#if>
     </#list>
 </#function>
+
+<#function getNext items key value>
+    <#list items?sort_by("id") as item>
+        <#if item[key] gt value>
+            <#return item/>
+        </#if>
+    </#list>
+</#function>
+
+<#function getPrev items key value>
+    <#list items?sort_by("id")?reverse as item>
+        <#if item[key] lt value>
+            <#return item/>
+        </#if>
+    </#list>
+</#function>
+
+
+
+
+

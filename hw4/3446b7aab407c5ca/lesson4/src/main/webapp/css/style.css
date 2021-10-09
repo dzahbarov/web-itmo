@@ -111,3 +111,41 @@ footer {
     border-top: var(--boder);
     text-align: center;
 }
+
+.middle main .UserBox {
+    border: var(--boder);
+    border-radius: var(--border-radius);
+}
+
+.middle main .UserBox {
+    position: relative;
+    min-height: 150px;
+}
+
+.middle main .UserBox .name {
+    padding: 0.7rem;
+    font-size: 2rem;
+}
+
+.middle main .UserBox img {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+}
+
+.middle main .jumps a {
+    text-decoration: none;
+}
+
+.middle main .jumps div {
+    font-size: 2rem;
+    display: inline-block;
+}
+
+.middle main .jumps .hasNeighbour a{
+    color: blue;
+}
+
+.middle main .jumps .hasntNeighbour a {
+    color: gray;
+}
