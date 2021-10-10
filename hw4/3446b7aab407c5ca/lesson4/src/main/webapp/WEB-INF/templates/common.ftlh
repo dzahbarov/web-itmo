@@ -1,3 +1,5 @@
+<#-- @ftlvariable name="color" type="ru.itmo.web.lesson4.model.Color" -->
+<#-- @ftlvariable name="current_menu" type="String" -->
 <#macro page>
     <!DOCTYPE html>
     <html lang="ru">
@@ -33,7 +35,7 @@
         </div>
         <div class="enter-or-register-box">
             <#if user??>
-                <@userlink user/>
+                <@userlink user "ы"/>
                 |
                 <a href="/logout">Logout</a>
             <#else>
@@ -46,12 +48,20 @@
             <#assign items=[
             {"href": "/index", "name": "Home"},
             {"href": "/misc/help", "name": "Help"},
-            {"href": "/contests", "name": "Contests"}
+            {"href": "/contests", "name": "Contests"},
+            {"href": "/users", "name": "Users"}
             ]/>
             <ul>
                 <#list items as item>
                     <li>
-                        <a href="${item.href}">${item.name}</a>
+                        <#if current_menu == item.href>
+                            <div class="current">
+                                <@menuItem item></@menuItem>
+                            </div>
+                        <#else>
+                            <@menuItem item></@menuItem>
+                        </#if>
+
                     </li>
                 </#list>
             </ul>
@@ -61,33 +71,9 @@
 
 <#macro sidebar>
     <aside>
-        <section>
-            <div class="header">Information</div>
-            <div class="body">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Asperiores enim expedita facilis
-                fugiat ipsum iste nobis reprehenderit tempore ut voluptatibus?
-            </div>
-            <div class="footer">
-                <a href="#">View all</a>
-            </div>
-        </section>
-        <section>
-            <div class="header">Information</div>
-            <div class="body">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Asperiores enim expedita facilis
-                fugiat ipsum iste nobis reprehenderit tempore ut voluptatibus?
-            </div>
-            <div class="footer">
-                <a href="#">View all</a>
-            </div>
-        </section>
-        <section>
-            <div class="header">Information</div>
-            <div class="body">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Asperiores enim expedita facilis
-                fugiat ipsum iste nobis reprehenderit tempore ut voluptatibus?
-            </div>
-            <div class="footer">
-                <a href="#">View all</a>
-            </div>
-        </section>
+        <#list posts?sort_by("id")?reverse as p>
+            <@postBlock2 p users/>
+        </#list>
     </aside>
 </#macro>
 
@@ -97,9 +83,42 @@
     </footer>
 </#macro>
 
-<#macro userlink user>
-<#-- @ftlvariable name="user" type="ru.itmo.web.lesson4.model.User" -->
-    <a href="/user?handle=${user.handle}">${user.name}</a>
+
+<#macro postBlock2 post users>
+<#-- @ftlvariable name="post" type="ru.itmo.web.lesson4.model.Post" -->
+<#-- @ftlvariable name="users" type="ru.itmo.web.lesson4.model.User[]" -->
+    <section>
+        <div class="header">Post #${post.id}</div>
+        <div class="body">${post.text}
+        </div>
+        <div class="footer">
+            <a href="/post?post_id=#{post.id}">View all</a>
+        </div>
+    </section>
+</#macro>
+
+
+<#macro userlink user nameonly="">
+    <#if nameonly?has_content>
+        <a href="/user?handle=${user.handle}">${user.name}</a>
+    <#elseif user.color == "RED">
+        <div class="red">
+            <a href="/user?handle=${user.handle}">${user.name}</a>
+        </div>
+    <#elseif user.color == "GREEN">
+        <div class="green">
+            <a href="/user?handle=${user.handle}">${user.name}</a>
+        </div>
+    <#elseif user.color == "BLUE">
+        <div class="blue">
+            <a href="/user?handle=${user.handle}">${user.name}</a>
+        </div>
+    </#if>
+</#macro>
+
+
+<#macro menuItem item>
+    <a href="${item.href}">${item.name}</a>
 </#macro>
 
 <#function findBy items key value>
@@ -125,7 +144,6 @@
         </#if>
     </#list>
 </#function>
-
 
 
 

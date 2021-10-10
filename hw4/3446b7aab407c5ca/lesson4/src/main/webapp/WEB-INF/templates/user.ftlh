@@ -6,23 +6,26 @@
 <#import "./common.ftlh" as c>
 
 <@c.page>
-
     <#if handle??>
         <#assign u = c.findBy(users, "handle", handle)!/>
-    <#elseif user_id??>
+    <#elseif user_id?? && user_id?is_number && user_id gt 0>
         <#assign u = c.findBy(users, "id", user_id)!/>
     </#if>
 
     <#if u?has_content>
         <div class="UserBox">
             <div class="name">
-                <@c.userlink u>*</@c.userlink>
+                <@c.userlink u ></@c.userlink>
             </div>
             <img src="img/no-title.jpg" alt="">
             <ul>
                 <li>id: ${u.id}</li>
                 <li>handle: ${u.handle}</li>
                 <li>name: ${u.name}</li>
+                <li>posts:
+                    <#assign res = posts?filter(post -> post.user_id == u.id)?size>
+                    <a href="posts?user_id=${u.id}"> ${res}</a>
+                </li>
             </ul>
         </div>
         <div class="jumps">
