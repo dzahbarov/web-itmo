@@ -35,7 +35,7 @@
         </div>
         <div class="enter-or-register-box">
             <#if user??>
-                <@userlink user "ы"/>
+                <@userlink user true/>
                 |
                 <a href="/logout">Logout</a>
             <#else>
@@ -72,7 +72,7 @@
 <#macro sidebar>
     <aside>
         <#list posts?sort_by("id")?reverse as p>
-            <@postBlock2 p users/>
+            <@postBlock p users false false false/>
         </#list>
     </aside>
 </#macro>
@@ -83,23 +83,8 @@
     </footer>
 </#macro>
 
-
-<#macro postBlock2 post users>
-<#-- @ftlvariable name="post" type="ru.itmo.web.lesson4.model.Post" -->
-<#-- @ftlvariable name="users" type="ru.itmo.web.lesson4.model.User[]" -->
-    <section>
-        <div class="header">Post #${post.id}</div>
-        <div class="body">${post.text}
-        </div>
-        <div class="footer">
-            <a href="/post?post_id=#{post.id}">View all</a>
-        </div>
-    </section>
-</#macro>
-
-
-<#macro userlink user nameonly="">
-    <#if nameonly?has_content>
+<#macro userlink user nameonly=false>
+    <#if nameonly>
         <a href="/user?handle=${user.handle}">${user.name}</a>
     <#elseif user.color == "RED">
         <div class="red">
@@ -146,5 +131,55 @@
 </#function>
 
 
+<#macro postBlock post users full=false title=false extrainf=false>
+<#-- @ftlvariable name="post" type="ru.itmo.web.lesson4.model.Post" -->
+<#-- @ftlvariable name="users" type="ru.itmo.web.lesson4.model.User[]" -->
+    <article>
+        <#if title && !full>
+            <div class="title">
+                <a href="/post?post_id=#{post.id}">${post.title}</a>
+            </div>
+        <#elseif title>
+            <div class="title">
+                ${post.title}
+            </div>
+        <#else>
+            <div class="header">Post #${post.id}</div>
+        </#if>
 
+        <#assign author = findBy(users, "id", post.user_id)>
+        <#if extrainf>
+            <div class="information">By ${author.name}</div>
+        </#if>
 
+        <div class="body">
+            <#if full>
+                <div class="fulltext">
+                    ${post.text}
+                </div>
+            <#else>
+                <div class="shorttext">
+                    ${post.text}
+                </div>
+            </#if>
+        </div>
+
+        <div class="footer">
+            <#if extrainf>
+                <div class="left">
+                    <img src="img/voteup.png" title="Vote Up" alt="Vote Up"/>
+                    <span class="positive-score">+173</span>
+                    <img src="img/votedown.png" title="Vote Down" alt="Vote Down"/>
+                </div>
+                <div class="right">
+                    <img src="img/date_16x16.png" title="Publish Time" alt="Publish Time"/>
+                    2 days ago
+                    <img src="img/comments_16x16.png" title="Comments" alt="Comments"/>
+                    <a href="#">68</a>
+                </div>
+            <#else>
+                <a href="/post?post_id=#{post.id}">View all</a>
+            </#if>
+        </div>
+    </article>
+</#macro>

@@ -70,37 +70,37 @@ aside {
     width: 20rem;
 }
 
-aside section {
+aside article {
     border: var(--boder);
     border-top-left-radius: var(--border-radius);
     border-top-right-radius: var(--border-radius);
     margin-bottom: 1rem;
 }
 
-aside section .header {
+aside article .header {
     border-bottom: var(--boder);
     padding: 0.25rem;
     font-weight: bold;
     color: var(--caption-color);
 }
 
-aside section .header:before {
+aside article .header:before {
     content: "→ ";
     font-size: 1.1rem;
 }
 
-aside section .body {
+aside article .body {
     padding: 0.25rem;
 }
 
-aside section .footer {
+aside article .footer {
     border-top: var(--boder);
     padding: 0.25rem;
     text-align: right;
     font-size: 0.8rem;
 }
 
-aside section .footer a:after {
+aside article .footer a:after {
     content: " →";
 }
 
@@ -168,7 +168,6 @@ header nav .current a {
 
 
 
-
 main article .title {
     color: var(--caption-color);
     font-weight: bold;
@@ -177,6 +176,14 @@ main article .title {
 
 main article .information {
     color: var(--grey-color);
+}
+
+
+article .body .shorttext {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
 }
 
 main article .body {

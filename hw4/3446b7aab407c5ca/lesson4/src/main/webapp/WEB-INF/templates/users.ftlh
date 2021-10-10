@@ -1,7 +1,6 @@
 <#import "./common.ftlh" as c>
 
 <@c.page>
-
     <div class="datatable">
         <div class="caption">Users</div>
         <table>
@@ -13,7 +12,6 @@
             </tr>
             </thead>
             <tbody>
-
             <#list users as u>
                 <tr>
                     <th>${u.id}</th>
@@ -21,13 +19,7 @@
                     <th>${u.name}</th>
                 </tr>
             </#list>
-
             </tbody>
         </table>
     </div>
-
-
-    <ul>
-
-    </ul>
 </@c.page>
