@@ -43,7 +43,7 @@ public class FreemarkerServlet extends HttpServlet {
 
         if (request.getRequestURI().equals("/")) {
             response.sendRedirect("/index");
-            response.setStatus(HttpServletResponse.SC_TEMPORARY_REDIRECT);
+//            response.setStatus(HttpServletResponse.SC_TEMPORARY_REDIRECT);
             return;
         }
 

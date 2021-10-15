@@ -86,17 +86,9 @@
 <#macro userlink user nameonly=false>
     <#if nameonly>
         <a href="/user?handle=${user.handle}">${user.name}</a>
-    <#elseif user.color == "RED">
-        <div class="red">
-            <a href="/user?handle=${user.handle}">${user.name}</a>
-        </div>
-    <#elseif user.color == "GREEN">
-        <div class="green">
-            <a href="/user?handle=${user.handle}">${user.name}</a>
-        </div>
-    <#elseif user.color == "BLUE">
-        <div class="blue">
-            <a href="/user?handle=${user.handle}">${user.name}</a>
+    <#else>
+        <div class="${user.color?lower_case}">
+            <a href="/user?handle=${user.handle}">${user.handle}</a>
         </div>
     </#if>
 </#macro>
@@ -149,17 +141,19 @@
 
         <#assign author = findBy(users, "id", post.user_id)>
         <#if extrainf>
-            <div class="information">By ${author.name}</div>
+            <div class="information">
+                By<@userlink author true/>
+            </div>
         </#if>
 
         <div class="body">
             <#if full>
                 <div class="fulltext">
-                    ${post.text}
+                    ${post.text}...
                 </div>
             <#else>
                 <div class="shorttext">
-                    ${post.text}
+                    ${post.text?truncate(250)}...
                 </div>
             </#if>
         </div>
