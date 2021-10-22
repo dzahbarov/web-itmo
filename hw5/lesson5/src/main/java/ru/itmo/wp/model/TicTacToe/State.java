@@ -1,6 +1,4 @@
-package ru.itmo.wp.model.TicTacToePage;
-
-import ru.itmo.wp.web.page.TicTacToePage;
+package ru.itmo.wp.model.TicTacToe;
 
 /**
  * @author dzahbarov

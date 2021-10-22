@@ -1,4 +1,4 @@
-package ru.itmo.wp.model.TicTacToePage;
+package ru.itmo.wp.model.TicTacToe;
 
 /**
  * @author dzahbarov

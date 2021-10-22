@@ -1,6 +1,6 @@
 package ru.itmo.wp.web.page;
 
-import ru.itmo.wp.model.TicTacToePage.State;
+import ru.itmo.wp.model.TicTacToe.State;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
