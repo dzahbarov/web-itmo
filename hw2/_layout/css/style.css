@@ -143,6 +143,7 @@ main article .information {
 }
 
 main article .body {
+
     padding-left: 1rem;
     border-left-style: solid;
     border-left-color: #B9B9B9;
@@ -163,6 +164,7 @@ main article .attachment li {
 }
 
 main article .footer {
+
     border: var(--border-width) solid #d4d4d4;
     border-radius: var(--border-radius);
     padding: 0.5rem;
