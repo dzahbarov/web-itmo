@@ -1,30 +1,39 @@
 package ru.itmo.wp.model.repository.impl;
 
+
 import ru.itmo.wp.model.domain.Talk;
 import ru.itmo.wp.model.domain.User;
-import ru.itmo.wp.model.exception.RepositoryException;
 import ru.itmo.wp.model.repository.TalkRepository;
 
 import java.sql.*;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @author dzahbarov
  */
-public class TalkRepositoryImpl extends BasicRepositoryImpl implements TalkRepository {
+public class TalkRepositoryImpl extends BasicRepositoryImpl<Talk> implements TalkRepository {
+
+    public TalkRepositoryImpl() {
+        table = "Talk";
+    }
 
     @Override
     public void save(Talk talk) {
-        String[] keys = {"sourceUserId", "targetUserId", "text", "creationTime"};
-        String[] values = {String.valueOf(talk.getSourceUserId()),
-                String.valueOf(talk.getTargetUserId()),
-                talk.getText()};
-        save("Talk", keys, values);
+        save(Map.of("sourceUserId", String.valueOf(talk.getSourceUserId()),
+                        "targetUserId", String.valueOf(talk.getTargetUserId()),
+                        "text", talk.getText()));
     }
 
+    @Override
+    public List<Talk> findTalks(User user) {
+        return findListByDisjunction(
+                Map.of("sourceUserId", Long.toString(user.getId()),
+                        "targetUserId", Long.toString(user.getId())));
+    }
 
-    private Talk toTalk(ResultSetMetaData metaData, ResultSet resultSet) throws SQLException {
+    @Override
+    Talk getEntity(ResultSetMetaData metaData, ResultSet resultSet) throws SQLException {
         if (!resultSet.next()) {
             return null;
         }
@@ -54,29 +63,5 @@ public class TalkRepositoryImpl extends BasicRepositoryImpl implements TalkRepos
         }
 
         return talk;
-    }
-
-    @Override
-    public List<Talk> findTalks(User user) {
-        long userId = user.getId();
-
-        List<Talk> talks = new ArrayList<>();
-        try (Connection connection = DATA_SOURCE.getConnection()) {
-            try (PreparedStatement statement = connection.prepareStatement("SELECT * FROM Talk WHERE (sourceUserId = ? OR targetUserId = ?) ORDER BY `creationTime` DESC")) {
-                statement.setLong(1, userId);
-                statement.setLong(2, userId);
-
-                try (ResultSet resultSet = statement.executeQuery()) {
-                    Talk talk;
-                    while ((talk = toTalk(statement.getMetaData(), resultSet)) != null) {
-                        talks.add(talk);
-                    }
-                }
-            }
-        } catch (SQLException e) {
-            throw new RepositoryException("Can't find Talk.", e);
-        }
-        return talks;
-
     }
 }

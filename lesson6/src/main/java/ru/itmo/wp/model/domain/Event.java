@@ -5,11 +5,14 @@ import java.util.Date;
 /**
  * @author dzahbarov
  */
-public class Event {
+public class Event implements Entity {
     private Long id;
     private Long userId;
     private Event.Type type;
     private Date creationTime;
+
+    public Event() {
+    }
 
     public Event(Long userId, Event.Type type) {
         this.userId = userId;

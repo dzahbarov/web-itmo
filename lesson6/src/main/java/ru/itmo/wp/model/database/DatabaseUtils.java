@@ -5,6 +5,7 @@ import org.mariadb.jdbc.MariaDbDataSource;
 import javax.sql.DataSource;
 import java.io.IOException;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Properties;
 
@@ -44,5 +45,7 @@ public class DatabaseUtils {
                 throw new RuntimeException("Can't create testing connection via DataSource.", e);
             }
         }
+
     }
+
 }

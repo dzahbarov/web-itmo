@@ -41,15 +41,17 @@ public class UserService {
         if (password.length() > 12) {
             throw new ValidationException("Password can't be longer than 12 characters");
         }
-
         if (!password.equals(confirmationPassword)) {
             throw new ValidationException("Password and confirmation password must be the same");
         }
 
+
+        if (Strings.isNullOrEmpty(user.getEmail())) {
+            throw new ValidationException("Email is required");
+        }
         if (userRepository.findByEmail(user.getEmail()) != null) {
             throw new ValidationException("Email is already in use");
         }
-
         if (!(user.getEmail().contains("@") && user.getEmail().split("@").length == 2)) {
             throw new ValidationException("Invalid email");
         }

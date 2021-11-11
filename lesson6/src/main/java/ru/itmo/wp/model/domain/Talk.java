@@ -5,7 +5,7 @@ import java.util.Date;
 /**
  * @author dzahbarov
  */
-public class Talk {
+public class Talk implements Entity {
     Long id;
     Long sourceUserId;
     Long targetUserId;
