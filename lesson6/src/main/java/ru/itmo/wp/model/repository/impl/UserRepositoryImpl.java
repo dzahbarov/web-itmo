@@ -43,7 +43,6 @@ public class UserRepositoryImpl extends BasicRepositoryImpl<User> implements Use
     @Override
     public User findByEmailAndPasswordSha(String email, String passwordSha) {
         return findByConjunction( Map.of("email", email, "passwordSha", passwordSha));
-
     }
 
     @Override
