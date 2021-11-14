@@ -1,3 +1,4 @@
+<#-- @ftlvariable name="notices" type="ru.itmo.wp.lesson8.domain.Notice[]" -->
 <#import "/spring.ftl" as spring>
 
 <#macro page>
@@ -41,18 +42,19 @@
     </header>
     <div class="middle">
         <aside>
-            <section>
-                <div class="header">
-                    Pay attention
-                </div>
-                <div class="body">
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cupiditate ducimus enim facere impedit nobis,
-                    nulla placeat quam suscipit unde voluptatibus.
-                </div>
-                <div class="footer">
-                    <a href="#">View all</a>
-                </div>
-            </section>
+            <#list notices as notice>
+                <section>
+                    <div class="header">
+                        ${notice.creationTime}
+                    </div>
+                    <div class="body">
+                        ${notice.content}
+                    </div>
+                    <div class="footer">
+                        <a href="#">View all</a>
+                    </div>
+                </section>
+            </#list>
         </aside>
         <main>
             <#nested/>
