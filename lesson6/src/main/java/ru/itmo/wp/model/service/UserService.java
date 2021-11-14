@@ -45,7 +45,6 @@ public class UserService {
             throw new ValidationException("Password and confirmation password must be the same");
         }
 
-
         if (Strings.isNullOrEmpty(user.getEmail())) {
             throw new ValidationException("Email is required");
         }

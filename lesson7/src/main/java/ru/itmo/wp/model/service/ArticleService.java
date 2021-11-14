@@ -28,11 +28,15 @@ public class ArticleService {
         if (article.getTitle().length() > 255) {
             throw new ValidationException("Title must less or equal 255 symbols");
         }
+
         if (article.getTitle().length() < 5) {
             throw new ValidationException("Title must longer than 4 symbols");
         }
         if (Strings.isNullOrEmpty(article.getText())) {
             throw new ValidationException("Text must be not empty");
+        }
+        if (article.getText().length() <= 5000) {
+            throw new ValidationException("Text must less or equal 5000 symbols");
         }
     }
 
@@ -42,5 +46,17 @@ public class ArticleService {
 
     public List<Article> findAll() {
         return articleRepository.findAll();
+    }
+
+    public List<Article> findAllNoHidden() {
+        return articleRepository.findAllNoHidden();
+    }
+
+    public List<Article> findAllByUser(User user) {
+        return articleRepository.findAllByUser(user);
+    }
+
+    public void changeStatus(long id) {
+        articleRepository.changeStatus(id);
     }
 }

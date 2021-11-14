@@ -46,7 +46,7 @@
                     response["articles"].forEach(function(article) {
                         $noData.hide();
                         const $tpl = $($(".articles template").prop("content")).clone();
-                        $tpl.find(".title").text(article.id);
+                        $tpl.find(".title").text(article.title);
                         $tpl.find(".information").text("By " + response["userIdByArticle"][article.userId] + ", " + article.creationTime);
                         $tpl.find(".body").text(article.text);
                         $tpl.find(".date").text(article.creationTime);

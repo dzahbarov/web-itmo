@@ -18,10 +18,20 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public Map<Long, String> findLoginsByArticles(List<Article> articles) {
+        Map<Long,String> users = findAllLoginsById();
         Map<Long, String> res = new HashMap<>();
         for (Article article : articles) {
-            String login = find(article.getUserId()).getLogin();
-            res.put(article.getId(), login);
+            long userId = article.getUserId();
+            res.put(article.getId(), users.get(userId));
+        }
+        return res;
+    }
+
+    public Map<Long,String> findAllLoginsById() {
+        List<User> users = findAll();
+        Map<Long, String> res = new HashMap<>();
+        for (User user : users) {
+            res.put(user.getId(), user.getLogin());
         }
         return res;
     }

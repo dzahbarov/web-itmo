@@ -15,18 +15,14 @@ public class IndexPage {
     ArticleService articleService = new ArticleService();
     UserService userService = new UserService();
     private void action(HttpServletRequest request, Map<String, Object> view) {
-        view.put("articles", articleService.findAll());
         putMessage(request, view);
     }
 
     @Json
     private void findAll(HttpServletRequest request, Map<String, Object> view) {
-        List<Article> all = articleService.findAll();
+        List<Article> all = articleService.findAllNoHidden();
         view.put("articles", all);
         view.put("userIdByArticle", userService.findLoginsByArticles(all));
-        view.put("hui", 123);
-
-
     }
 
     private void putMessage(HttpServletRequest request, Map<String, Object> view) {

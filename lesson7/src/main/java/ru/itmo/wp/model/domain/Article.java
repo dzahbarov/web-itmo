@@ -12,6 +12,16 @@ public class Article {
     private String text;
     private Date creationTime;
 
+    public boolean isHidden() {
+        return hidden;
+    }
+
+    public void setHidden(boolean hidden) {
+        this.hidden = hidden;
+    }
+
+    private boolean hidden;
+
     public long getId() {
         return id;
     }

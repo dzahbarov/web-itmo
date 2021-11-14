@@ -35,7 +35,7 @@
             $(".login-form").submit(function () {
                 const $error = $(this).find(".error");
 
-                var data = {};
+                const data = {};
                 data.action = "enter";
                 data.login = $(this).find("input[name='login']").val();
                 data.password = $(this).find("input[name='password']").val();

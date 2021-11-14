@@ -108,6 +108,8 @@ abstract class BasicRepositoryImpl<T extends Entity> {
         return res;
     }
 
+    // find("id = ? OR creationTime > ?", id, creationTime)
+
     private StringBuilder getPreparedStatement(Map<String, String> args, String delimiter) {
         StringBuilder stringStatement = new StringBuilder();
         stringStatement.append("SELECT * FROM ").append(table).append(" WHERE (");

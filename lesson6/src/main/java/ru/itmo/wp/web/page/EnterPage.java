@@ -18,7 +18,6 @@ public class EnterPage extends Page {
         userService.validateEnter(loginOrEmail, password);
         User user = userService.findByLoginOrEmailAndPassword(loginOrEmail, password);
 
-
         eventService.save(new Event(user.getId(), Event.Type.ENTER));
 
         setUser(user);

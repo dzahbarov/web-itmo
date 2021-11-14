@@ -19,19 +19,11 @@ public class ArticlePage {
     ArticleService articleService = new ArticleService();
 
     private void action(HttpServletRequest request, Map<String, Object> view) {
-        if (request.getSession().getAttribute("user") == null) {
-            request.getSession().setAttribute("message", "Publish articles available only for auth users");
-            throw new RedirectException("/index");
-        }
+        checkPermission(request);
     }
 
-
     private void publish(HttpServletRequest request, Map<String, Object> view) throws ValidationException {
-        if (request.getSession().getAttribute("user") == null) {
-            request.getSession().setAttribute("message", "Publish articles available only for auth users");
-            throw new RedirectException("/index");
-        }
-
+        checkPermission(request);
         HttpSession session = request.getSession();
         String title = request.getParameter("title");
         String text = request.getParameter("text");
@@ -46,4 +38,12 @@ public class ArticlePage {
         request.getSession().setAttribute("message", "Article were successfully published");
         throw new RedirectException("/index");
     }
+
+    private void checkPermission(HttpServletRequest request) {
+        if (request.getSession().getAttribute("user") == null) {
+            request.getSession().setAttribute("message", "Publish articles available only for auth users");
+            throw new RedirectException("/index");
+        }
+    }
+
 }

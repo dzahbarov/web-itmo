@@ -6,11 +6,11 @@ window.notify = function (message) {
 }
 
 
-window.ajax = function ($error, queue) {
+window.ajax = function ($error, query) {
     $.ajax({
         type: "POST",
         url: "",
-        data: queue,
+        data: query,
         dataType: "json",
         success: function (response) {
             if (response["error"]) {
