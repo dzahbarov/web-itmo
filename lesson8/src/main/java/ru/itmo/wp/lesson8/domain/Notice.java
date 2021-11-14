@@ -6,6 +6,7 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.util.Date;
 
 /**
@@ -22,7 +23,9 @@ public class Notice {
     private Long id;
 
     @Lob
-    @NotBlank private String content;
+    @NotBlank
+    @Size(min = 5, max = 50)
+    private String content;
 
     @CreationTimestamp
     private Date creationTime;
