@@ -3,6 +3,7 @@ package ru.itmo.wp.lesson8.service;
 import org.springframework.stereotype.Service;
 import ru.itmo.wp.lesson8.domain.User;
 import ru.itmo.wp.lesson8.form.UserCredentials;
+import ru.itmo.wp.lesson8.form.UserStatusForm;
 import ru.itmo.wp.lesson8.repository.UserRepository;
 
 import java.util.List;
@@ -31,11 +32,19 @@ public class UserService {
         return login == null || password == null ? null : userRepository.findByLoginAndPassword(login, password);
     }
 
+
     public User findById(Long id) {
         return id == null ? null : userRepository.findById(id).orElse(null);
     }
 
     public List<User> findAll() {
         return userRepository.findAllByOrderByIdDesc();
+    }
+
+    public void setStatus(UserStatusForm userStatusForm) {
+        User user = userRepository.findById(userStatusForm.getUserId()).orElse(null);
+        assert user != null;
+        user.setDisabled(userStatusForm.isUserStatus());
+        userRepository.save(user);
     }
 }

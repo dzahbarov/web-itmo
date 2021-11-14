@@ -32,5 +32,7 @@ public class User {
     @CreationTimestamp
     private Date creationTime;
 
+
+    private boolean disabled;
 }
 

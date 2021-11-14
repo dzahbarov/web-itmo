@@ -48,7 +48,7 @@ textarea{
 
 }
 .form-box .error {
-    /*clear: both;*/
+    clear: both;
     color: var(--error-color);
     font-size: 0.75rem;
     margin-left: 12rem;
