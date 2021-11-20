@@ -8,12 +8,15 @@ import ru.itmo.wp.model.exception.ValidationException;
 import ru.itmo.wp.model.repository.UserRepository;
 import ru.itmo.wp.model.repository.impl.UserRepositoryImpl;
 
+import javax.servlet.http.HttpServletRequest;
 import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/** @noinspection UnstableApiUsage*/
+/**
+ * @noinspection UnstableApiUsage
+ */
 public class UserService {
     private final UserRepository userRepository = new UserRepositoryImpl();
     private static final String PASSWORD_SALT = "177d4b5f2e4f4edafa7404533973c04c513ac619";
@@ -69,5 +72,30 @@ public class UserService {
 
     public Map<Long, String> findLoginsByArticles(List<Article> articles) {
         return userRepository.findLoginsByArticles(articles);
+    }
+
+    public void setStatus(long id, boolean status) {
+        userRepository.setStatus(id, status);
+    }
+
+    public void validateChange(HttpServletRequest request, User user) throws ValidationException {
+        String status = request.getParameter("status");
+
+
+
+        if (Strings.isNullOrEmpty(status) || (!status.equals("true") && !status.equals("false"))) {
+            throw new ValidationException("Invalid status");
+        }
+
+        String userId = request.getParameter("userId");
+        if (Strings.isNullOrEmpty(userId) || !userId.matches("[0-9]+")) {
+            throw new ValidationException("Invalid userId");
+        }
+
+        long artIdNumber = Long.parseLong(userId);
+
+        if (userRepository.find(artIdNumber) == null) {
+            throw new ValidationException("User should exist");
+        }
     }
 }

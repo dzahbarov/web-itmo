@@ -10,7 +10,9 @@ import ru.itmo.wp.model.repository.ArticleRepository;
 import ru.itmo.wp.model.repository.UserRepository;
 import ru.itmo.wp.model.repository.impl.ArticleRepositoryImpl;
 import ru.itmo.wp.model.repository.impl.UserRepositoryImpl;
+import ru.itmo.wp.web.exception.RedirectException;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,6 +22,7 @@ import java.util.Map;
  */
 public class ArticleService {
     ArticleRepository articleRepository = new ArticleRepositoryImpl();
+
 
     public void validate(Article article) throws ValidationException {
         if (Strings.isNullOrEmpty(article.getTitle())) {
@@ -56,7 +59,36 @@ public class ArticleService {
         return articleRepository.findAllByUser(user);
     }
 
-    public void changeStatus(long id) {
-        articleRepository.changeStatus(id);
+    public void setStatus(long id, boolean status) {
+        articleRepository.setStatus(id, status);
+    }
+
+    public boolean isAuthor(User user, Long articleId) {
+        List<Article> articles = findAllByUser(user);
+        for (Article article : articles) {
+            if (article.getId() == articleId) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void validateChange(HttpServletRequest request, User user) throws ValidationException {
+        String status = request.getParameter("status");
+
+        if (Strings.isNullOrEmpty(status) || (!status.equals("true") && !status.equals("false"))) {
+            throw new ValidationException("Invalid status");
+        }
+
+        String artId = request.getParameter("artId");
+        if (Strings.isNullOrEmpty(artId) || !artId.matches("[0-9]+")) {
+            throw new ValidationException("Invalid artId");
+        }
+
+        Long artIdNumber = Long.parseLong(artId);
+
+        if (!isAuthor(user, artIdNumber)) {
+            throw new ValidationException("Only author can change access to the article");
+        }
     }
 }

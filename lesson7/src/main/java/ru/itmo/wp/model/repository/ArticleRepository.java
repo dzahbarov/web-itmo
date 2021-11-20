@@ -14,5 +14,5 @@ public interface ArticleRepository {
     List<Article> findAllNoHidden();
     List<Article> findAllByUser(User user);
 
-    void changeStatus(long id);
+    void setStatus(long id, boolean status);
 }

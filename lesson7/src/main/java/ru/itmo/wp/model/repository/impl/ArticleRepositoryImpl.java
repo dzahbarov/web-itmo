@@ -123,7 +123,18 @@ public class ArticleRepositoryImpl implements ArticleRepository {
     }
 
     @Override
-    public void changeStatus(long id) {
+    public void setStatus(long id, boolean status) {
+        try (Connection connection = DATA_SOURCE.getConnection()) {
+            try (PreparedStatement statement = connection.prepareStatement("UPDATE Article SET hidden=? WHERE id=?")) {
+                statement.setBoolean(1, status);
+                statement.setLong(2, id);
 
+                try (ResultSet resultSet = statement.executeQuery()) {
+                    // No op
+                }
+            }
+        } catch (SQLException e) {
+            throw new RepositoryException("Can't find Article.", e);
+        }
     }
 }

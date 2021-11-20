@@ -3,8 +3,8 @@ package ru.itmo.wp.web.page;
 import com.google.common.base.Strings;
 import ru.itmo.wp.model.domain.Article;
 import ru.itmo.wp.model.domain.User;
+import ru.itmo.wp.model.exception.ValidationException;
 import ru.itmo.wp.model.service.ArticleService;
-import ru.itmo.wp.web.annotation.Json;
 import ru.itmo.wp.web.exception.RedirectException;
 
 import javax.servlet.http.HttpServletRequest;
@@ -18,7 +18,6 @@ public class MyArticlesPage {
 
     ArticleService articleService = new ArticleService();
 
-
     private void action(HttpServletRequest request, Map<String, Object> view) {
         checkPermission(request);
         User user = (User) request.getSession().getAttribute("user");
@@ -28,20 +27,15 @@ public class MyArticlesPage {
     }
 
 
-    private void changeStatus(HttpServletRequest request, Map<String, Object> view) {
-        //validate();
-//        Long id  = Long.valueOf(request.getParameter("id"));
-//
-//        String password = request.getParameter("");
-//
-//        User user = userService.validateAndFindByLoginAndPassword(login, password);
-//        request.getSession().setAttribute("user", user);
-//        request.getSession().setAttribute("message", "Hello, " + user.getLogin());
-//
-//        throw new RedirectException("/index");
-        Long id  = Long.valueOf(request.getParameter("artId"));
-        articleService.changeStatus(id);
+    private void changeStatus(HttpServletRequest request, Map<String, Object> view) throws ValidationException {
+        checkPermission(request);
+        User user = (User) request.getSession().getAttribute("user");
+        articleService.validateChange(request, user);
 
+        long id = Long.parseLong(request.getParameter("artId"));
+        boolean status = Boolean.parseBoolean(request.getParameter("status"));
+
+        articleService.setStatus(id, status);
     }
 
     private void putMessage(HttpServletRequest request, Map<String, Object> view) {

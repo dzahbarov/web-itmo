@@ -15,4 +15,6 @@ public interface UserRepository {
     void save(User user, String passwordSha);
     Map<Long,String> findAllLoginsById();
     Map<Long, String> findLoginsByArticles(List<Article> articles);
+
+    void setStatus(long id, boolean status);
 }

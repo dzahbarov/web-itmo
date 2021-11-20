@@ -4,7 +4,9 @@
 
 <@c.page>
     <main>
-        <div class="art-table">
+        <div class="error"></div>
+        <div class="art-table datatable">
+            <div class="caption">My articles</div>
             <table>
                 <thead>
                 <tr>
@@ -14,16 +16,17 @@
                 </tr>
                 </thead>
                 <tbody>
+                <div class="hh"></div>
                 <#list articles as article>
-                    <tr data-articleId="${article.id}">
+                    <tr class="myClass">
                         <th>${article.id}</th>
                         <th>${article.title}</th>
-                        <th>
+                        <th class="bottom">
                             <div class="button-field">
                                 <#if article.hidden>
-                                    <input type="submit" value="Show" class="hideToShow">
-                                 <#else>
-                                     <input type="submit" value="Hide" class="showToHide">
+                                    <input type="submit" value="Show" class="button-field1" data-articleId="${article.id}">
+                                <#else>
+                                    <input type="submit" value="Hide" class="button-field1" data-articleId="${article.id}">
                                 </#if>
                             </div>
                         </th>
@@ -39,25 +42,29 @@
         $(function () {
             const $error = $(this).find(".error");
             const $tbody = $(".art-table").find("tbody");
-            const artId = $(this).attr("data-articleId");
 
-            $("input [type='submit']").val("kek");
-
-            $tbody.find(".hideToShow").click(function (){
+            $tbody.find(".button-field1").click(function () {
+                const $bottom = $(this);
                 const req = {};
                 req.action = "changeStatus";
-                req.artId = artId;
-                ajax($error, req);
-                $tbody.find(".hideToShow").text("ui");
-            })
+                req.artId = $bottom.attr("data-articleId");
+                if ($bottom.attr("value") === "Show") {
+                    req.status = false;
+                } else if ($bottom.attr("value") === "Hide") {
+                    req.status = true;
+                } else {
+                    req.status = -1;
+                }
 
-            $tbody.find(".showToHide").click(function (){
-                const req = {};
-                req.artId = artId;
-                req.action = "changeStatus";
-                ajax($error, req);
+                function success() {
+                    if ($bottom.attr("value") === "Show") {
+                        $bottom.val("Hide")
+                    } else if ($bottom.attr("value") === "Hide") {
+                        $bottom.val("Show")
+                    }
+                }
+                ajax($error, req, success);
             })
-
         })
     </script>
 

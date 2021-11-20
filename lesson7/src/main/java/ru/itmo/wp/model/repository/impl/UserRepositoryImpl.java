@@ -114,6 +114,8 @@ public class UserRepositoryImpl implements UserRepository {
                 case "creationTime":
                     user.setCreationTime(resultSet.getTimestamp(i));
                     break;
+                case "admin":
+                    user.setAdmin(resultSet.getBoolean(i));
                 default:
                     // No operations.
             }
@@ -125,7 +127,7 @@ public class UserRepositoryImpl implements UserRepository {
     @Override
     public void save(User user, String passwordSha) {
         try (Connection connection = DATA_SOURCE.getConnection()) {
-            try (PreparedStatement statement = connection.prepareStatement("INSERT INTO `User` (`login`, `passwordSha`, `email`, `creationTime`) VALUES (?, ?, ?, NOW())", Statement.RETURN_GENERATED_KEYS)) {
+            try (PreparedStatement statement = connection.prepareStatement("INSERT INTO `User` (`login`, `passwordSha`, `email`, `creationTime`, `admin`) VALUES (?, ?, ?, NOW(), 0)", Statement.RETURN_GENERATED_KEYS)) {
                 statement.setString(1, user.getLogin());
                 statement.setString(2, passwordSha);
                 statement.setString(3, user.getEmail());
@@ -144,6 +146,22 @@ public class UserRepositoryImpl implements UserRepository {
             }
         } catch (SQLException e) {
             throw new RepositoryException("Can't save User.", e);
+        }
+    }
+
+    @Override
+    public void setStatus(long id, boolean status) {
+        try (Connection connection = DATA_SOURCE.getConnection()) {
+            try (PreparedStatement statement = connection.prepareStatement("UPDATE User SET admin=? WHERE id=?")) {
+                statement.setBoolean(1, status);
+                statement.setLong(2, id);
+
+                try (ResultSet resultSet = statement.executeQuery()) {
+                    // No op
+                }
+            }
+        } catch (SQLException e) {
+            throw new RepositoryException("Can't find User.", e);
         }
     }
 }
