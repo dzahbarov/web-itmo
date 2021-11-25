@@ -24,11 +24,11 @@
                 <#list users as user>
                     <tr>
                         <td class="id">${user.id}</td>
-                        <td class="login">${user.login}</td>
+                        <td class="login"><a href="/user/${user.id?string.computer}">${user.login}</a></td>
                         <td class="creationTime">${user.creationTime}</td>
                         <td class="disabled">
                             <form method="post" action="">
-                                <input type="hidden" id="userId" name="userId" value="${user.id}">
+                                <input type="hidden" id="userId" name="userId" value=${user.id?string.computer}>
                                 <#if user.disabled>
                                     <input type="hidden" id="userStatus" name="userStatus" value=0>
                                     <input type="submit" value="enable" class="enable">
@@ -36,7 +36,6 @@
                                     <input type="hidden" id="userStatus" name="userStatus" value=1>
                                     <input type="submit" value="disable" class="disable">
                                 </#if>
-
                             </form>
                         </td>
 

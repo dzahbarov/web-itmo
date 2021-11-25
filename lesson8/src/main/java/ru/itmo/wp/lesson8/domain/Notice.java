@@ -24,7 +24,7 @@ public class Notice {
 
     @Lob
     @NotBlank
-    @Size(min = 5, max = 50)
+    @Size(min = 5, max = 65000)
     private String content;
 
     @CreationTimestamp

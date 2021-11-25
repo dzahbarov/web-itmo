@@ -21,7 +21,7 @@ import java.util.Date;
 public class User {
     @Id
     @GeneratedValue
-    private long id;
+    private Long id;
 
     @NotNull
     @NotEmpty
@@ -31,7 +31,6 @@ public class User {
 
     @CreationTimestamp
     private Date creationTime;
-
 
     private boolean disabled;
 }

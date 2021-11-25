@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import ru.itmo.wp.lesson8.form.NoticeForm;
+import ru.itmo.wp.lesson8.domain.Notice;
 import ru.itmo.wp.lesson8.service.NoticeService;
 
 import javax.servlet.http.HttpSession;
@@ -28,12 +28,12 @@ public class NoticePage extends Page {
 
     @GetMapping
     public String getNoticePage(Model model) {
-        model.addAttribute("noticeForm", new NoticeForm());
+        model.addAttribute("noticeForm", new Notice());
         return "NoticePage";
     }
 
     @PostMapping
-    public String addNotice(@Valid @ModelAttribute("noticeForm") NoticeForm noticeForm, BindingResult bindingResult, HttpSession httpSession) {
+    public String addNotice(@Valid @ModelAttribute("noticeForm") Notice noticeForm, BindingResult bindingResult, HttpSession httpSession) {
         if (bindingResult.hasErrors()) {
             return "NoticePage";
         }
