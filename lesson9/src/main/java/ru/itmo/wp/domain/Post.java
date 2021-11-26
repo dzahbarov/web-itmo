@@ -1,5 +1,7 @@
 package ru.itmo.wp.domain;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
@@ -7,8 +9,11 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.Date;
+import java.util.List;
 
 /** @noinspection unused*/
+@Getter
+@Setter
 @Entity
 @Table
 public class Post {
@@ -34,43 +39,15 @@ public class Post {
     @CreationTimestamp
     private Date creationTime;
 
-    public long getId() {
-        return id;
-    }
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
+    @OrderBy("creationTime desc ")
+    private List<Comment> comments;
 
-    public void setId(long id) {
-        this.id = id;
-    }
 
-    public User getUser() {
-        return user;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getText() {
-        return text;
-    }
-
-    public void setText(String text) {
-        this.text = text;
-    }
-
-    public Date getCreationTime() {
-        return creationTime;
-    }
-
-    public void setCreationTime(Date creationTime) {
-        this.creationTime = creationTime;
-    }
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "post_tag",
+            joinColumns = @JoinColumn(name = "post_id"),
+            inverseJoinColumns = @JoinColumn(name = "tag_id")
+    )
+    private List<Tag> tags;
 }

@@ -29,7 +29,6 @@ public class UsersPage extends Page {
             return;
         }
         binder.addValidators(userStatusFormValidator);
-
     }
 
     @GetMapping

@@ -1,4 +1,5 @@
 <#import "commons.ftlh" as c>
+<#import "/spring.ftl" as spring>
 
 <@c.page>
     <div class="users datatable">
@@ -24,7 +25,8 @@
                 <#list users as user>
                     <tr>
                         <td class="id">${user.id}</td>
-                        <td class="login"><a href="/user/${user.id?string.computer}">${user.login}</a></td>
+                        <td class="login"><a href="<@spring.url '/user/${user.id?string.computer}'/>">${user.login}</a>
+                        </td>
                         <td class="creationTime">${user.creationTime}</td>
                         <td class="disabled">
                             <form method="post" action="">

@@ -26,7 +26,7 @@ public class UserPage extends Page {
         this.userService = userService;
     }
 
-    @GetMapping(value = {"{id}", "/", ""})
+    @GetMapping(value = {"{id}", "/", })
     public String getUserPage(Model model, @PathVariable(required = false) String id) {
         long validId = 0L;
         if (id != null && id.matches("[0-9]+")) {

@@ -1,9 +1,18 @@
 /* article */
 main article {
     margin-bottom: 2em;
+    width: 90%;
 }
 
+main article .title a{
+    text-decoration: none;
+
+    color: var(--caption-color);
+    font-weight: bold;
+    font-size: 1.25rem;
+}
 main article .title {
+
     color: var(--caption-color);
     font-weight: bold;
     font-size: 1.25rem;
@@ -16,6 +25,7 @@ main article .information {
 }
 
 main article .body {
+    word-wrap: break-word;
     border-left: 4px solid var(--border-color);
     padding-left: 0.75rem;
     font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;

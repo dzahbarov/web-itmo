@@ -138,3 +138,12 @@ aside section .footer a:after {
     background-color: var(--message-background-color);
     text-align: center;
 }
+
+.error {
+    color: var(--error-color);
+    font-size: 0.75rem;
+}
+
+.comment {
+    white-space: pre
+}

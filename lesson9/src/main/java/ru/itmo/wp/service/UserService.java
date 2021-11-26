@@ -3,23 +3,32 @@ package ru.itmo.wp.service;
 import org.springframework.stereotype.Service;
 import ru.itmo.wp.domain.Post;
 import ru.itmo.wp.domain.Role;
+import ru.itmo.wp.domain.Tag;
 import ru.itmo.wp.domain.User;
+import ru.itmo.wp.form.PostForm;
 import ru.itmo.wp.form.UserCredentials;
 import ru.itmo.wp.repository.RoleRepository;
+import ru.itmo.wp.repository.TagRepository;
 import ru.itmo.wp.repository.UserRepository;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class UserService {
     private final UserRepository userRepository;
+    private final TagRepository tagRepository;
 
-    /** @noinspection FieldCanBeLocal, unused */
+    /**
+     * @noinspection FieldCanBeLocal, unused
+     */
     private final RoleRepository roleRepository;
 
-    public UserService(UserRepository userRepository, RoleRepository roleRepository) {
+    public UserService(UserRepository userRepository, RoleRepository roleRepository, TagRepository tagRepository) {
         this.userRepository = userRepository;
-
+        this.tagRepository = tagRepository;
         this.roleRepository = roleRepository;
         for (Role.Name name : Role.Name.values()) {
             if (roleRepository.countByName(name) == 0) {
@@ -53,6 +62,25 @@ public class UserService {
     }
 
     public void writePost(User user, Post post) {
+        user.addPost(post);
+        userRepository.save(user);
+    }
+
+    public void writePost(User user, PostForm postForm) {
+        Post post = new Post();
+        post.setTitle(postForm.getTitle());
+        post.setText(postForm.getText());
+        Set<Tag> tags = new HashSet<>();
+        for (String tag : postForm.getTags().split("\\s+")) {
+            Tag toAdd = tagRepository.findByName(tag);
+            if (toAdd == null) {
+                toAdd = new Tag();
+                toAdd.setName(tag);
+                toAdd = tagRepository.save(toAdd);
+            }
+            tags.add(toAdd);
+        }
+        post.setTags(new ArrayList<>(tags));
         user.addPost(post);
         userRepository.save(user);
     }

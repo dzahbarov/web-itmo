@@ -93,3 +93,48 @@
     color: var(--error-color);
     font-size: 0.75rem;
 }
+
+/**/
+
+/*.commentForm {*/
+/*    width: 36rem;*/
+/*    margin: 0 auto;*/
+/*}*/
+
+/*.commentForm .header {*/
+/*    color: var(--caption-color);*/
+/*    font-weight: bold;*/
+/*    font-size: 1.4rem;*/
+/*    margin-bottom: 1rem;*/
+/*}*/
+
+/*.commentForm .field {*/
+/*    margin-bottom: 1rem;*/
+/*}*/
+
+/*.commentForm .field .name {*/
+/*}*/
+
+/*.commentForm .field .value {*/
+/*    width: 35rem;*/
+/*}*/
+
+/*.commentForm .field input, .form .field textarea {*/
+/*    width: 100%;*/
+/*}*/
+
+/*.commentForm .field textarea {*/
+/*    min-height: 10rem;*/
+/*}*/
+
+/*.commentForm .button-field {*/
+/*}*/
+
+/*.commentForm .button-field input {*/
+/*    padding: 0.1rem 1.5rem;*/
+/*}*/
+
+/*.commentForm .error {*/
+/*    color: var(--error-color);*/
+/*    font-size: 0.75rem;*/
+/*}*/
