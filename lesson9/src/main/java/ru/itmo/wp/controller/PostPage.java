@@ -6,8 +6,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ru.itmo.wp.domain.Comment;
 import ru.itmo.wp.domain.Post;
-import ru.itmo.wp.domain.Role;
-import ru.itmo.wp.security.AnyRole;
 import ru.itmo.wp.security.Guest;
 import ru.itmo.wp.service.PostService;
 
@@ -31,34 +29,38 @@ public class PostPage extends Page {
     @GetMapping(value = {"{id}", "/"})
     public String showPost(@PathVariable(required = false) String id, Model model) {
 
-        long validId = validatePathId(id);
+        long validId = parseId(id);
         model.addAttribute("post", postService.find(validId));
         model.addAttribute("comment", new Comment());
         return "PostPage";
     }
 
     @PostMapping("{id}")
-    public String addComment(@PathVariable String id,  Model model, @Valid @ModelAttribute("comment") Comment comment,
+    public String addComment(@PathVariable String id, Model model, @Valid @ModelAttribute("comment") Comment comment,
                              BindingResult bindingResult,
                              HttpSession httpSession) {
-        long validId = validatePathId(id);
+        Post post = postService.find(parseId(id));
 
-        if (bindingResult.hasErrors() || postService.find(validId) == null) {
-            model.addAttribute("post", postService.find(validId));
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("post", post);
             return "PostPage";
         }
 
-        postService.addComment(validId, comment, getUser(httpSession));
+        if (post == null) {
+            return "PostPage";
+        }
+
+        postService.addComment(post.getId(), comment, getUser(httpSession));
         putMessage(httpSession, "You published new comment");
 
         return "redirect:/post/" + id;
     }
 
-    private long validatePathId(@PathVariable(required = false) String id) {
-        long validId = 0L;
-        if (id != null && id.matches("[0-9]+")) {
-            validId = Long.parseLong(id);
+    private long parseId(@PathVariable(required = false) String id) {
+        try {
+            return Long.parseLong(id);
+        } catch (Exception ignored) {
+            return 0L;
         }
-        return validId;
     }
 }

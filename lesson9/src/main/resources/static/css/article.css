@@ -85,3 +85,12 @@ main article .footer .positive-score {
     font-weight: bold;
     line-height: 1.75rem;
 }
+
+.comment {
+    white-space: pre;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+    word-wrap: break-word;
+    border-left: 2px solid var(--border-color);
+    padding-left: 0.75rem;
+}
