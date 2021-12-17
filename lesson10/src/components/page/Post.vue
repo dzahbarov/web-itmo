@@ -5,9 +5,10 @@
               :user="findUser(post)"
               :key="post.id"/>
 
-    <div class="comment" v-for="comment in findComments(post)" :key="comment.id">
+    <div class="comment" v-for="comment in comments" :key="comment.id">
       {{findUser(comment).name}}: {{comment.text}}
     </div>
+
   </div>
 </template>
 
@@ -17,20 +18,14 @@ import ViewPost from "./ViewPost";
 export default {
   name: "Post",
   components: {ViewPost},
-  props: ["post", "comments", "users"],
+  props: ["post", "comments", "findUser"],
   methods: {
-    findComments:function (post) {
-      return Object.values(this.comments).filter(comment => comment.postId === post.id)
+    numberOfComments: function () {
+      return this.comments.length
     },
-    numberOfComments: function (post) {
-      return Object.values(this.comments).filter(comment => comment.postId === post.id).length
-    },
-    findUser: function (item) {
-      return Object.values(this.users).find((user) => user.id === item.userId)
-    },
-
   },
 }
+
 </script>
 
 <style scoped>

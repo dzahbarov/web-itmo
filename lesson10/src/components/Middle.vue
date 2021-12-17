@@ -2,13 +2,16 @@
   <div class="middle">
     <Sidebar :posts="viewPosts"/>
     <main>
-      <Index v-if="page === 'Index'" :comments="comments" :posts="posts" :users="users"/>
+      <Index v-if="page === 'Index'" :posts="posts" :findUser="findUser" :numberOfComments="numberOfComments"/>
       <Enter v-if="page === 'Enter'"/>
       <Register v-if="page === 'Register'"/>
       <WritePost v-if="page === 'WritePost'"/>
       <EditPost v-if="page === 'EditPost'"/>
       <Users v-if="page === 'Users'" :users="users"/>
-      <Post v-if="page === 'Post'" :comments="comments" :post="post" :users="users" />
+      <Post v-if="page === 'Post'"
+            :comments="Object.values(this.comments).filter(comment => comment.postId === post.id)"
+            :post="post"
+            :findUser="findUser"/>
 
     </main>
   </div>
@@ -42,6 +45,15 @@ export default {
     Post
   },
   props: ["posts", "users", "comments", "post"],
+  methods: {
+    findUser: function(post) {
+      return Object.values(this.users).find((user) => user.id === post.userId);
+    },
+    numberOfComments: function (post) {
+      return Object.values(this.comments).filter(comment => comment.postId === post.id).length
+    },
+  },
+
   computed: {
     viewPosts: function () {
       return Object.values(this.posts).sort((a, b) => b.id - a.id).slice(0, 2);
@@ -52,6 +64,7 @@ export default {
     this.$root.$on("onPostPage", (post) => { this.page = "Post"; this.post=post})
   }
 }
+
 </script>
 
 <style scoped>
